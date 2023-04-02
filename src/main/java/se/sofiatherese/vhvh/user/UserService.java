@@ -12,8 +12,9 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AppPasswordConfig appPasswordConfig) {
         this.userRepository = userRepository;
+        this.appPasswordConfig = appPasswordConfig;
     }
 
     @Override
