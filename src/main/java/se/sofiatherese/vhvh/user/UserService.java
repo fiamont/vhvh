@@ -37,6 +37,10 @@ public class UserService implements UserDetailsService {
         }
 
         userModel.setPassword(appPasswordConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
+        userModel.setAccountNonExpired(true);
+        userModel.setAccountNonLocked(true);
+        userModel.setCredentialsNonExpired(true);
+        userModel.setEnabled(true);
         userRepository.save(userModel);
 
         return new ResponseEntity<>(userModel, HttpStatus.CREATED);
@@ -56,7 +60,7 @@ public class UserService implements UserDetailsService {
             UserModel anna = new UserModel(
                     "anna.al@mail.com",
                     appPasswordConfig.bcryptPasswordEncoder().encode("12345678"),
-                    "Anna", "Al",UserRole.USER);
+                    "Anna", "Al",UserRole.USER, true, true, true, true);
 
             userRepository.save(anna);
             return new ResponseEntity<>(anna, HttpStatus.CREATED);
@@ -71,7 +75,7 @@ public class UserService implements UserDetailsService {
             UserModel britta = new UserModel(
                     "britta.bok@mail.com",
                     appPasswordConfig.bcryptPasswordEncoder().encode("heja1234"),
-                    "Britta", "Bok", UserRole.USER);
+                    "Britta", "Bok", UserRole.USER, true, true, true, true);
 
             userRepository.save(britta);
             return new ResponseEntity<>(britta, HttpStatus.CREATED);
