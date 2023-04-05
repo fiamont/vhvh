@@ -35,6 +35,7 @@ public class UserController {
 
      */
 
+    /*
     @GetMapping("/saveuseranna")
     public UserModel createUserAnna {
 
@@ -44,7 +45,7 @@ public class UserController {
                 "Anna", "Ek", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
 
         return userRepository.save(anna);
-    }
+    } */
 
     @PostMapping("/register")
     public ResponseEntity<UserModel> registerUser(@Valid @RequestBody UserModel userModel, BindingResult result) {
