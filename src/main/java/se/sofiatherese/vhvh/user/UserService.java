@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
-import se.sofiatherese.vhvh.user.authorities.UserRoles;
 
 import java.util.List;
 
@@ -37,18 +36,7 @@ public class UserService implements UserDetailsService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        String role = String.valueOf(userModel.getAuthorities().iterator().next());
-
-        switch (role) {
-            case "ADMIN" -> userModel.setAuthorities(UserRoles.ADMIN.getGrantedAuthorities());
-            case "USER" -> userModel.setAuthorities(UserRoles.USER.getGrantedAuthorities());
-        }
-
         userModel.setPassword(appPasswordConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
-        userModel.setAccountNonExpired(true);
-        userModel.setAccountNonLocked(true);
-        userModel.setCredentialsNonExpired(true);
-        userModel.setEnabled(true);
         userRepository.save(userModel);
 
         return new ResponseEntity<>(userModel, HttpStatus.CREATED);
@@ -68,7 +56,7 @@ public class UserService implements UserDetailsService {
             UserModel anna = new UserModel(
                     "anna.al@mail.com",
                     appPasswordConfig.bcryptPasswordEncoder().encode("12345678"),
-                    "Anna", "Al", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
+                    "Anna", "Al",UserRole.USER);
 
             userRepository.save(anna);
             return new ResponseEntity<>(anna, HttpStatus.CREATED);
@@ -83,7 +71,7 @@ public class UserService implements UserDetailsService {
             UserModel britta = new UserModel(
                     "britta.bok@mail.com",
                     appPasswordConfig.bcryptPasswordEncoder().encode("heja1234"),
-                    "Britta", "Bok", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
+                    "Britta", "Bok", UserRole.USER);
 
             userRepository.save(britta);
             return new ResponseEntity<>(britta, HttpStatus.CREATED);

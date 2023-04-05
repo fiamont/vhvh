@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.Collections;
 
 @Entity
 @Table(name="users")
@@ -18,8 +18,8 @@ import java.util.Set;
 public class UserModel implements UserDetails {
     @SequenceGenerator(name = "userIdGenerator", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
     @NotEmpty
     @Email
     private String username;
@@ -29,16 +29,45 @@ public class UserModel implements UserDetails {
     private String firstname;
     @NotEmpty
     private String lastname;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<SimpleGrantedAuthority> authorities;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
+    public UserModel(String username, String password, String firstname, String lastname, UserRole role) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.role = role;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        Collection<SimpleGrantedAuthority> authoritySet;
+
+        authoritySet = Collections.singleton(new SimpleGrantedAuthority(role.toString()));
+
+        return authoritySet;
     }
 
     @Override
@@ -53,34 +82,26 @@ public class UserModel implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+        return true;
     }
 
-    public UserModel(String username, String password, String firstname, String lastname, Set<SimpleGrantedAuthority> authorities, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
-        this.username = username;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.authorities = authorities;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public void setUsername(String username) {
@@ -91,24 +112,16 @@ public class UserModel implements UserDetails {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
     public void setFirstname(String firstname) {
         this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
     }
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public void setAuthorities(Set<SimpleGrantedAuthority> authorities) {
-        this.authorities = authorities;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {
