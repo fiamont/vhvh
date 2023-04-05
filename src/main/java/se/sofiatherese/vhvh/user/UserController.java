@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -27,12 +26,12 @@ public class UserController {
 
 
     /*TODO:
-        1. 1 metod för att lägga till en användare
-        2. 1 metod för att läsa in alla användare
         3. 1 metod för att läsa in 1 specifik användare?
-        4. 1 metod för läsa in användare i specifik ordning (bokstavsordning t.ex.?)
         5. 1 metod för ändra en specifik användare
         6. 1 metod för ta bort en specifik användare
+        7. Göra så inte all info kommer med så fort man hämtar en användare? DAO/DTO?
+            t.ex. bara username, role, firstname och lastname.
+        8.
 
      */
 
@@ -46,6 +45,21 @@ public class UserController {
         return userService.viewAllUsersAllInfo();
     }
 
+    @GetMapping("/showuser/{userid}")
+    public ResponseEntity<Optional<UserModel>> showUser (@PathVariable Long userid) {
+        return userService.getOneUser(userid);
+    }
+
+    @GetMapping("/showusersbyfirstname")
+    public ResponseEntity<List<UserModel>> showUsersByFirstname() {
+        return userService.sortAllUsersByFirstname();
+    }
+
+    @GetMapping("/showusersbylastname")
+    public ResponseEntity<List<UserModel>> showUsersByLastname(){
+        return userService.sortAllUsersByLastname();
+    }
+
     @GetMapping("/saveuseranna")
     public ResponseEntity<UserModel> registerUserAnna (){
 
@@ -56,5 +70,10 @@ public class UserController {
     public ResponseEntity<UserModel> registerUserBritta (){
 
         return userService.createUserBritta();
+    }
+
+    @DeleteMapping("/deleteuser/{userid}")
+    public void deleteUser (@PathVariable Long userid) {
+        userService.removeUser(userid);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -54,6 +55,30 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public ResponseEntity<Optional<UserModel>> getOneUser(Long userid) {
+        try {
+            return ResponseEntity.ok(this.userRepository.findById(userid));
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<List<UserModel>> sortAllUsersByFirstname() {
+        try {
+            return ResponseEntity.ok(this.userRepository.orderByFirstname());
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<List<UserModel>> sortAllUsersByLastname() {
+        try {
+            return ResponseEntity.ok(this.userRepository.orderByLastname());
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public ResponseEntity<UserModel> createUserAnna() {
         try {
 
@@ -82,5 +107,13 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public void removeUser(Long userid) {
+        boolean exists = userRepository.existsById(userid);
+        if (!exists){
+            throw new IllegalStateException("user with id" + userid + "does not exists");
+        }
+        userRepository.deleteById(userid);
     }
 }
