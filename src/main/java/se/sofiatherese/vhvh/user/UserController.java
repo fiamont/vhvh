@@ -26,13 +26,10 @@ public class UserController {
 
 
     /*TODO:
-        3. 1 metod för att läsa in 1 specifik användare?
         5. 1 metod för ändra en specifik användare
-        6. 1 metod för ta bort en specifik användare
         7. Göra så inte all info kommer med så fort man hämtar en användare? DAO/DTO?
             t.ex. bara username, role, firstname och lastname.
-        8.
-
+        8. Göra så det kommer upp rätt statuskod istället för bara 500 när man kör deleteuser
      */
 
     @PostMapping("/register")
