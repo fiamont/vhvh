@@ -9,10 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
 import se.sofiatherese.vhvh.user.authorities.UserRoles;
+
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -53,4 +54,41 @@ public class UserService implements UserDetailsService {
         return new ResponseEntity<>(userModel, HttpStatus.CREATED);
     }
 
+    public ResponseEntity<List<UserModel>> viewAllUsersAllInfo() {
+        try {
+            return ResponseEntity.ok(this.userRepository.findAll());
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<UserModel> createUserAnna() {
+        try {
+
+            UserModel anna = new UserModel(
+                    "anna.al@mail.com",
+                    appPasswordConfig.bcryptPasswordEncoder().encode("12345678"),
+                    "Anna", "Al", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
+
+            userRepository.save(anna);
+            return new ResponseEntity<>(anna, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<UserModel> createUserBritta() {
+        try {
+
+            UserModel britta = new UserModel(
+                    "britta.bok@mail.com",
+                    appPasswordConfig.bcryptPasswordEncoder().encode("heja1234"),
+                    "Britta", "Bok", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
+
+            userRepository.save(britta);
+            return new ResponseEntity<>(britta, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

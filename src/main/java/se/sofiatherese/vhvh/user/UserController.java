@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
-import se.sofiatherese.vhvh.user.authorities.UserRoles;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -35,20 +36,25 @@ public class UserController {
 
      */
 
-    /*
-    @GetMapping("/saveuseranna")
-    public UserModel createUserAnna {
-
-        UserModel anna = new UserModel(
-                "anna.ek@mail.com",
-                appPasswordConfig.bcryptPasswordEncoder().encode("12345678"),
-                "Anna", "Ek", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
-
-        return userRepository.save(anna);
-    } */
-
     @PostMapping("/register")
     public ResponseEntity<UserModel> registerUser(@Valid @RequestBody UserModel userModel, BindingResult result) {
         return userService.createUser(userModel, result);
+    }
+
+    @GetMapping("/showusers")
+    public ResponseEntity<List<UserModel>> showUsers () {
+        return userService.viewAllUsersAllInfo();
+    }
+
+    @GetMapping("/saveuseranna")
+    public ResponseEntity<UserModel> registerUserAnna (){
+
+        return userService.createUserAnna();
+    }
+
+    @GetMapping("/saveuserbritta")
+    public ResponseEntity<UserModel> registerUserBritta (){
+
+        return userService.createUserBritta();
     }
 }
