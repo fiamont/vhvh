@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import se.sofiatherese.vhvh.config.AppPasswordConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -14,23 +13,19 @@ import java.util.Optional;
 
 @Controller
 public class UserController {
-    private final UserRepository userRepository;
-    private final AppPasswordConfig appPasswordConfig;
     private final UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository, AppPasswordConfig appPasswordConfig, UserService userService) {
-        this.userRepository = userRepository;
-        this.appPasswordConfig = appPasswordConfig;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
 
     /*TODO:
-        5. 1 metod för ändra en specifik användare
         7. Göra så inte all info kommer med så fort man hämtar en användare? DAO/DTO?
             t.ex. bara username, role, firstname och lastname.
-        8. Göra så det kommer upp rätt statuskod istället för bara 500 när man kör deleteuser
+        8. Se över put och matchmetoderna i service! "'Optional.get()' without 'isPresent()' check"
+           och "Method invocation 'setAccessible' may produce 'NullPointerException'"
      */
 
     @PostMapping("/register")
@@ -76,8 +71,8 @@ public class UserController {
     }
 
     @PutMapping("/updateuser/{userid}")
-    public ResponseEntity<UserModel> updateUser (@PathVariable Long userId, @RequestBody final UserModel userModel) {
-        return userService.updateUser(userId, userModel);
+    public ResponseEntity<UserModel> updateUser (@PathVariable Long userid, @RequestBody final UserModel userModel) {
+        return userService.updateUser(userid, userModel);
     }
 
     @PatchMapping("/updateuserfield/{userid}")

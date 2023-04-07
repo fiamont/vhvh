@@ -120,11 +120,6 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        /* boolean exists = userRepository.existsById(userid);
-        if (!exists){
-            throw new IllegalStateException("user with id" + userid + "does not exists");
-        }
-        userRepository.deleteById(userid); */
     }
 
     public ResponseEntity<UserModel> updateUser(@PathVariable Long userId, @RequestBody final UserModel userModel){
