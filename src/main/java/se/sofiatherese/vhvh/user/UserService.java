@@ -8,11 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -109,11 +113,57 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void removeUser(Long userid) {
-        boolean exists = userRepository.existsById(userid);
+    public ResponseEntity<UserModel> removeUser(Long userid) {
+        try {
+            userRepository.deleteById(userid);
+            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        /* boolean exists = userRepository.existsById(userid);
         if (!exists){
             throw new IllegalStateException("user with id" + userid + "does not exists");
         }
-        userRepository.deleteById(userid);
+        userRepository.deleteById(userid); */
     }
+
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long userId, @RequestBody final UserModel userModel){
+        try{
+            Optional<UserModel> usedUser = userRepository.findById(userId);
+            UserModel updatedUser = usedUser.get();
+
+            updatedUser.setUsername(userModel.getUsername());
+            updatedUser.setPassword(userModel.getPassword());
+            updatedUser.setFirstname(userModel.getFirstname());
+            updatedUser.setLastname(userModel.getLastname());
+            updatedUser.setRole(userModel.getRole());
+            updatedUser.setAccountNonExpired(userModel.isAccountNonExpired());
+            updatedUser.setAccountNonLocked(userModel.isAccountNonLocked());
+            updatedUser.setCredentialsNonExpired(userModel.isCredentialsNonExpired());
+            updatedUser.setEnabled(userModel.isEnabled());
+            userRepository.save(updatedUser);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<UserModel> updateUserField(Long userId, Map<Object, Object> updates) {
+        try {
+            UserModel userModel = userRepository.findById(userId).get();
+            updates.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(UserModel.class, (String) key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, userModel, value);
+            });
+            userRepository.save(userModel);
+
+            return new ResponseEntity<>(userModel, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

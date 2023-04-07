@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -70,7 +71,17 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteuser/{userid}")
-    public void deleteUser (@PathVariable Long userid) {
-        userService.removeUser(userid);
+    public ResponseEntity<UserModel> deleteUser (@PathVariable Long userid) {
+        return userService.removeUser(userid);
+    }
+
+    @PutMapping("/updateuser/{userid}")
+    public ResponseEntity<UserModel> updateUser (@PathVariable Long userId, @RequestBody final UserModel userModel) {
+        return userService.updateUser(userId, userModel);
+    }
+
+    @PatchMapping("/updateuserfield/{userid}")
+    public ResponseEntity<UserModel> updateField (@PathVariable("userid") Long userId, @RequestBody Map<Object, Object> updates){
+        return userService.updateUserField(userId, updates);
     }
 }
