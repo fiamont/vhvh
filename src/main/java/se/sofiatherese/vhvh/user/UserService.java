@@ -38,10 +38,10 @@ public class UserService implements UserDetailsService {
 
         String role = String.valueOf(userModel.getAuthorities().iterator().next());
 
-        switch (role) {
+        /*switch (role) {
             case "ADMIN" -> userModel.setAuthorities(UserRoles.ADMIN.getGrantedAuthorities());
             case "USER" -> userModel.setAuthorities(UserRoles.USER.getGrantedAuthorities());
-        }
+        }*/
 
         userModel.setPassword(appPasswordConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
         userModel.setAccountNonExpired(true);

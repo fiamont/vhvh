@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
-import se.sofiatherese.vhvh.user.authorities.UserRoles;
 
 @Controller
 public class UserController {
@@ -35,7 +33,7 @@ public class UserController {
 
      */
 
-    @GetMapping("/saveuseranna")
+    /*@GetMapping("/saveuseranna")
     public UserModel createUserAnna {
 
         UserModel anna = new UserModel(
@@ -44,10 +42,24 @@ public class UserController {
                 "Anna", "Ek", UserRoles.USER.getGrantedAuthorities(), true, true, true, true);
 
         return userRepository.save(anna);
-    }
+    }*/
 
     @PostMapping("/register")
     public ResponseEntity<UserModel> registerUser(@Valid @RequestBody UserModel userModel, BindingResult result) {
+
+        userModel.setUsername(userModel.getUsername());
+        userModel.setPassword(userModel.getPassword());
+        userModel.setFirstname(userModel.getFirstname());
+        userModel.setLastname(userModel.getLastname());
+        userModel.setAccountNonLocked(true);
+        userModel.setAccountNonExpired(true);
+        userModel.setEnabled(true);
+        userModel.setCredentialsNonExpired(true);
+
+
+        System.out.println(userModel);
+        userRepository.save(userModel);
         return userService.createUser(userModel, result);
+
     }
 }
