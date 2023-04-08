@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.user.UserModel;
 
@@ -50,6 +51,31 @@ public class PlaceService {
     public ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeid) {
         try {
             return ResponseEntity.ok(this.placeRepository.findById(placeid));
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<PlaceModel> removePlace(Long placeId) {
+        try {
+            placeRepository.deleteById(placeId);
+            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<PlaceModel> updatePlace(@PathVariable Long placeId, @Valid @RequestBody PlaceModel placeModel, BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        try {
+            Optional<PlaceModel> usedPlace = placeRepository.findById(placeId);
+            PlaceModel updatedPlace = usedPlace.get();
+
+            updatedPlace.setPlaceName(placeModel.getPlaceName());
+            placeRepository.save(updatedPlace);
+            return new ResponseEntity<>(updatedPlace, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

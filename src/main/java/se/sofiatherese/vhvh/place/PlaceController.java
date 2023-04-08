@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import se.sofiatherese.vhvh.user.UserModel;
 
 import java.util.List;
@@ -38,9 +36,19 @@ public class PlaceController {
         return placeService.viewAllPlacesByName();
     }
 
-    @GetMapping("/showplace/{placeid}")
+    @GetMapping("/showoneplace/{placeid}")
     public ResponseEntity<Optional<PlaceModel>> showOnePlace (Long placeid) {
         return placeService.getOnePlace(placeid);
+    }
+
+    @DeleteMapping("/deleteplace/{placeId}")
+    public ResponseEntity<PlaceModel> deletePlace (@PathVariable Long placeId) {
+        return placeService.removePlace(placeId);
+    }
+
+    @PutMapping("/updateplace/{placeId}")
+    public ResponseEntity<PlaceModel> updatePlace (@PathVariable Long placeId, @Valid @RequestBody PlaceModel placeModel, BindingResult result) {
+        return placeService.updatePlace(placeId, placeModel, result);
     }
 
 }
