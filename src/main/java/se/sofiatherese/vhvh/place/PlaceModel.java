@@ -19,7 +19,7 @@ public class PlaceModel {
     private Long placeId;
     @NotEmpty
     private String placeName;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel userModel;
 
