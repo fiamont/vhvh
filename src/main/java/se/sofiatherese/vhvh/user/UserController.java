@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/api")
 public class UserController {
     private final UserService userService;
 
@@ -28,7 +29,7 @@ public class UserController {
            och "Method invocation 'setAccessible' may produce 'NullPointerException'"
      */
 
-    @PostMapping("/register")
+    @PostMapping("/registeruser")
     public ResponseEntity<UserModel> registerUser(@Valid @RequestBody UserModel userModel, BindingResult result) {
         return userService.createUser(userModel, result);
     }
