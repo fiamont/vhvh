@@ -6,12 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import se.sofiatherese.vhvh.user.UserModel;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/api")
 public class PlaceController {
 
     private final PlaceService placeService;
@@ -22,8 +23,8 @@ public class PlaceController {
     }
 
     @PostMapping("/createplace")
-    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, final UserModel userModel, BindingResult result){
-        return placeService.createPlace(placeModel, userModel, result);
+    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, Principal principal){
+        return placeService.createPlace(placeModel, result, principal);
     }
 
     @GetMapping("/showallplaces")

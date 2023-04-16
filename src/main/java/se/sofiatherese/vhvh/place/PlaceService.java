@@ -9,7 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.user.UserModel;
+import se.sofiatherese.vhvh.user.UserRepository;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,15 +20,23 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public PlaceService(PlaceRepository placeRepository) {
+    public PlaceService(PlaceRepository placeRepository, UserRepository userRepository) {
         this.placeRepository = placeRepository;
+        this.userRepository = userRepository;
     }
 
-    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, final UserModel userModel, BindingResult result) {
+    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, Principal principal) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        String username = principal.getName();
+
+        UserModel userModel = userRepository.findByUsername(username);
+
+        placeModel.setUserModel(userModel);
         placeRepository.save(placeModel);
         return new ResponseEntity<>(placeModel, HttpStatus.CREATED);
     }
