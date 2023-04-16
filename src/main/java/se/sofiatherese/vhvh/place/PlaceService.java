@@ -27,7 +27,6 @@ public class PlaceService {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        placeModel.setUserModel(userModel);
         placeRepository.save(placeModel);
         return new ResponseEntity<>(placeModel, HttpStatus.CREATED);
     }
