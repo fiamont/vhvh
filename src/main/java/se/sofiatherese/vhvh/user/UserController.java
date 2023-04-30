@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
@@ -75,10 +74,5 @@ public class UserController {
     @PutMapping("/updateuser/{userid}")
     public ResponseEntity<UserModel> updateUser (@PathVariable Long userid, @RequestBody final UserModel userModel) {
         return userService.updateUser(userid, userModel);
-    }
-
-    @PatchMapping("/updateuserfield/{userid}")
-    public ResponseEntity<UserModel> updateField (@PathVariable("userid") Long userId, @RequestBody Map<Object, Object> updates){
-        return userService.updateUserField(userId, updates);
     }
 }

@@ -1,6 +1,5 @@
 package se.sofiatherese.vhvh.user;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -33,6 +31,4 @@ public interface UserService extends UserDetailsService {
     ResponseEntity<UserModel> removeUser(Long userid);
 
     ResponseEntity<UserModel> updateUser(Long userId, final UserModel userModel);
-
-    ResponseEntity<UserModel> updateUserField(Long userId, Map<Object, Object> updates);
 }

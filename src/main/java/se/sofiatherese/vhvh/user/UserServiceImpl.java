@@ -5,13 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import se.sofiatherese.vhvh.config.AppPasswordConfig;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -32,22 +29,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserModel> createUser(UserModel userModel, BindingResult result) {
-        try{
+        try {
             if (result.hasErrors()) {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             userModel.setPassword(appPasswordConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
-            userModel.setAccountNonExpired(true);
-            userModel.setAccountNonLocked(true);
-            userModel.setCredentialsNonExpired(true);
-            userModel.setEnabled(true);
             userRepository.save(userModel);
 
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }    }
+        }
+    }
 
     @Override
     public ResponseEntity<List<UserModel>> viewAllUsersAllInfo() {
@@ -88,11 +82,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserModel> createUserAnna() {
         try {
-
-            UserModel anna = new UserModel(
-                    "anna.al@mail.com",
-                    appPasswordConfig.bcryptPasswordEncoder().encode("12345678"),
-                    "Anna", "Al",UserRole.USER, true, true, true, true);
+            UserModel anna = UserModel.builder()
+                    .username("anna.alm@mail.com")
+                    .password(appPasswordConfig.bcryptPasswordEncoder().encode("12345678"))
+                    .firstname("Anna")
+                    .lastname("Alm")
+                    .role(UserRole.USER)
+                    .build();
 
             userRepository.save(anna);
             return new ResponseEntity<>(anna, HttpStatus.CREATED);
@@ -104,11 +100,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserModel> createUserBritta() {
         try {
-
-            UserModel britta = new UserModel(
-                    "britta.bok@mail.com",
-                    appPasswordConfig.bcryptPasswordEncoder().encode("heja1234"),
-                    "Britta", "Bok", UserRole.USER, true, true, true, true);
+            UserModel britta = UserModel.builder()
+                    .username("britta.bok@mail.com")
+                    .password(appPasswordConfig.bcryptPasswordEncoder().encode("heja1234"))
+                    .firstname("Britta")
+                    .lastname("Bok")
+                    .role(UserRole.USER)
+                    .build();
 
             userRepository.save(britta);
             return new ResponseEntity<>(britta, HttpStatus.CREATED);
@@ -128,44 +126,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserModel> updateUser(Long userId, final UserModel userModel){
-        try{
-            Optional<UserModel> usedUser = userRepository.findById(userId);
+    public ResponseEntity<UserModel> updateUser(Long userId, final UserModel userModel) {
+        Optional<UserModel> usedUser = userRepository.findById(userId);
+        if (usedUser.isPresent()) {
             UserModel updatedUser = usedUser.get();
-
             updatedUser.setUsername(userModel.getUsername());
             updatedUser.setPassword(userModel.getPassword());
             updatedUser.setFirstname(userModel.getFirstname());
             updatedUser.setLastname(userModel.getLastname());
             updatedUser.setRole(userModel.getRole());
-            updatedUser.setAccountNonExpired(userModel.isAccountNonExpired());
-            updatedUser.setAccountNonLocked(userModel.isAccountNonLocked());
-            updatedUser.setCredentialsNonExpired(userModel.isCredentialsNonExpired());
-            updatedUser.setEnabled(userModel.isEnabled());
             userRepository.save(updatedUser);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-
-        }catch (Exception e) {
+        } else {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @Override
-    public ResponseEntity<UserModel> updateUserField(Long userId, Map<Object, Object> updates) {
-        try {
-            UserModel userModel = userRepository.findById(userId).get();
-            updates.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(UserModel.class, (String) key);
-                field.setAccessible(true);
-                ReflectionUtils.setField(field, userModel, value);
-            });
-            userRepository.save(userModel);
-
-            return new ResponseEntity<>(userModel, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }
