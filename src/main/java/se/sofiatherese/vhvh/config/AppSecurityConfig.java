@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 import se.sofiatherese.vhvh.user.UserService;
 
 @Configuration
@@ -36,9 +37,19 @@ public class AppSecurityConfig {
                         .authenticated()
                 )
                 .formLogin()
+                .loginPage("/login")
+                .permitAll()
                 .and()
                 .authenticationProvider(authenticationOverride());
-
+        http.cors().configurationSource(request -> {
+            CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+            corsConfiguration.addAllowedMethod("DELETE");
+            corsConfiguration.addAllowedMethod("POST");
+            corsConfiguration.addAllowedMethod("GET");
+            corsConfiguration.addAllowedMethod("OPTIONS");
+            corsConfiguration.addAllowedMethod("PUT");
+            return corsConfiguration;
+        });
         return http.build();
     }
 
