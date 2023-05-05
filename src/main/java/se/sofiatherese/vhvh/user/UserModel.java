@@ -24,7 +24,7 @@ import java.util.List;
 public class UserModel implements UserDetails {
     @SequenceGenerator(name = "userIdGenerator", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     @NotEmpty
     @Email
