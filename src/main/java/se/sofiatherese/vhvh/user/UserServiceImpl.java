@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import se.sofiatherese.vhvh.config.AppPasswordConfig;
+import se.sofiatherese.vhvh.config.AppConfig;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +15,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final AppPasswordConfig appPasswordConfig;
+    private final AppConfig appConfig;
 
-    public UserServiceImpl(UserRepository userRepository, AppPasswordConfig appPasswordConfig) {
+    public UserServiceImpl(UserRepository userRepository, AppConfig appConfig) {
         this.userRepository = userRepository;
-        this.appPasswordConfig = appPasswordConfig;
+        this.appConfig = appConfig;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            userModel.setPassword(appPasswordConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
+            userModel.setPassword(appConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
             userRepository.save(userModel);
 
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserModel anna = UserModel.builder()
                     .username("anna.alm@mail.com")
-                    .password(appPasswordConfig.bcryptPasswordEncoder().encode("12345678"))
+                    .password(appConfig.bcryptPasswordEncoder().encode("12345678"))
                     .firstname("Anna")
                     .lastname("Alm")
                     .role(UserRole.USER)
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserModel britta = UserModel.builder()
                     .username("britta.bok@mail.com")
-                    .password(appPasswordConfig.bcryptPasswordEncoder().encode("heja1234"))
+                    .password(appConfig.bcryptPasswordEncoder().encode("heja1234"))
                     .firstname("Britta")
                     .lastname("Bok")
                     .role(UserRole.USER)
