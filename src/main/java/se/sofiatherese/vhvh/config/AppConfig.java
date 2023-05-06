@@ -12,14 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import se.sofiatherese.vhvh.user.UserRepository;
-import se.sofiatherese.vhvh.user.UserService;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
 
     private final UserRepository userRepository;
-    private final UserService userService;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -35,7 +33,7 @@ public class AppConfig {
     public DaoAuthenticationProvider authenticationOverride() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
-        provider.setUserDetailsService(userService);
+        provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(bcryptPasswordEncoder());
 
         return provider;
