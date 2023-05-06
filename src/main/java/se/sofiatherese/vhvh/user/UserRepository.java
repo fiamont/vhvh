@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
-    UserModel findByUsername (String username);
+    //UserModel findByUsername (String username);
 
-    //Optional<UserModel> findByUsername (String username);
+    Optional<UserModel> findByUsername (String username);
 
     @Query("SELECT s FROM UserModel s ORDER BY s.firstname asc")
     List<UserModel> orderByFirstname ();
