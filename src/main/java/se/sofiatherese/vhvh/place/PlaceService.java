@@ -34,7 +34,7 @@ public class PlaceService {
         }
         String username = principal.getName();
 
-        UserModel userModel = userRepository.findByUsername(username);
+        UserModel userModel = userRepository.findByUsername(username).orElseThrow();
 
         placeModel.setUserModel(userModel);
         placeRepository.save(placeModel);
