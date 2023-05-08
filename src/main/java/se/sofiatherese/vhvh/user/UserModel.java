@@ -22,6 +22,7 @@ public class UserModel implements UserDetails {
     private Long userId;
     @NotEmpty
     @Email
+    @Column(unique = true)
     private String username;
     @Size(min=8, max=200)
     private String password;
