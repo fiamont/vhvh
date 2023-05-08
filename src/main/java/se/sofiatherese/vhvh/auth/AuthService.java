@@ -21,6 +21,6 @@ public class AuthService {
         );
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new Exception("User not found"));
         var jwtToken = jwtService.generateToken(user);
-        return AuthResponse.builder().token(jwtToken).build();
+        return AuthResponse.builder().token(jwtToken).userId(user.getUserId()).username(user.getUsername()).build();
     }
 }
