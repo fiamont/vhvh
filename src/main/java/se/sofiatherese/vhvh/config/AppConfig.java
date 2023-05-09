@@ -8,12 +8,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import se.sofiatherese.vhvh.user.UserModel;
 import se.sofiatherese.vhvh.user.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Configuration
@@ -25,17 +29,22 @@ public class AppConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                logger = LoggerFactory.getLogger(AppConfig.class);
-                try{
-                    logger.info("Loading user " + username);
-                    return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-                } catch (UsernameNotFoundException e) {
-                    logger.error("User not found with username: " + username);
-                    throw e;
-                }
+        return username -> {
+            logger = LoggerFactory.getLogger(AppConfig.class);
+            try {
+                logger.info("Loading user " + username);
+                UserModel userModel = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + userModel.getRole()));
+
+                return new org.springframework.security.core.userdetails.User(
+                        userModel.getUsername(),
+                        userModel.getPassword(),
+                        authorities
+                );
+            } catch (UsernameNotFoundException e) {
+                logger.error("User not found with username: " + username);
+                throw e;
             }
         };
     }
