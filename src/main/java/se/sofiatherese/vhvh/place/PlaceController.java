@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,24 +21,24 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @PostMapping("/createplace")
-    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, Principal principal){
-        return placeService.createPlace(placeModel, result, principal);
+    @PostMapping("/createplace/{username}")
+    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, @PathVariable String username){
+        return placeService.createPlace(placeModel, result, username);
     }
 
-    @GetMapping("/showallplaces")
-    public ResponseEntity<List<PlaceModel>> showAllPlaces () {
-        return placeService.viewAllPlaces();
+    @GetMapping("/showallplaces/{username}")
+    public ResponseEntity<List<PlaceModel>> showAllPlaces (@PathVariable String username) {
+        return placeService.viewAllPlaces(username);
     }
 
-    @GetMapping("/showallplacesbyname")
-    public ResponseEntity<List<PlaceModel>> showAllPlacesByName () {
-        return placeService.viewAllPlacesByName();
+    @GetMapping("/showallplacesbyname/{username}")
+    public ResponseEntity<List<PlaceModel>> showAllPlacesByName (@PathVariable String username) {
+        return placeService.viewAllPlacesByName(username);
     }
 
-    @GetMapping("/showoneplace/{placeid}")
-    public ResponseEntity<Optional<PlaceModel>> showOnePlace (Long placeid) {
-        return placeService.getOnePlace(placeid);
+    @GetMapping("/showoneplace/{placeId}")
+    public ResponseEntity<Optional<PlaceModel>> showOnePlace (@PathVariable Long placeId) {
+        return placeService.getOnePlace(placeId);
     }
 
     @DeleteMapping("/deleteplace/{placeId}")

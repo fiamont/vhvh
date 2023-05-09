@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.user.UserModel;
 import se.sofiatherese.vhvh.user.UserRepository;
 
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +28,10 @@ public class PlaceService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, Principal principal) {
+    public ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, String username) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        String username = principal.getName();
-
         UserModel userModel = userRepository.findByUsername(username).orElseThrow();
 
         placeModel.setUserModel(userModel);
@@ -41,17 +39,33 @@ public class PlaceService {
         return new ResponseEntity<>(placeModel, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<PlaceModel>> viewAllPlaces () {
+    public List<PlaceModel> placeModelList (UserModel userModel, List<PlaceModel> allPlaces) {
+        List<PlaceModel> userPlaces = new ArrayList<>();
+        for (PlaceModel place : allPlaces) {
+            if (place.getUserModel().equals(userModel)) {
+                userPlaces.add(place);
+            }
+        }
+        return userPlaces;
+    }
+
+    public ResponseEntity<List<PlaceModel>> viewAllPlaces (String username) {
         try {
-            return ResponseEntity.ok(this.placeRepository.findAll());
+            UserModel userModel = userRepository.findByUsername(username).orElseThrow();
+            List<PlaceModel> allPlaces = placeRepository.findAll();
+            List<PlaceModel> userPlaces = placeModelList(userModel, allPlaces);
+            return new ResponseEntity<>(userPlaces, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<List<PlaceModel>> viewAllPlacesByName () {
+    public ResponseEntity<List<PlaceModel>> viewAllPlacesByName (String username) {
         try {
-            return ResponseEntity.ok(this.placeRepository.orderByPlaceName());
+            UserModel userModel = userRepository.findByUsername(username).orElseThrow();
+            List<PlaceModel> allPlaces = placeRepository.orderByPlaceName();
+            List<PlaceModel> userPlaces = placeModelList(userModel, allPlaces);
+            return new ResponseEntity<>(userPlaces, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
