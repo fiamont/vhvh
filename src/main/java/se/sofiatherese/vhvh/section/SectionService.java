@@ -12,18 +12,18 @@ import java.util.Optional;
 @Service
 public interface SectionService {
 
-    public ResponseEntity<SectionModel> makeSection (@Valid SectionModel sectionModel, Long placeId, BindingResult result);
+    ResponseEntity<SectionModel> makeSection (@Valid SectionModel sectionModel, Long placeId, BindingResult result);
 
-    public List<SectionModel> sectionModelList (PlaceModel placeModel, List<SectionModel> allSections);
+    List<SectionModel> sectionModelList (PlaceModel placeModel, List<SectionModel> allSections);
 
-    public ResponseEntity<List<SectionModel>> viewAllSections (Long placeId);
+    ResponseEntity<List<SectionModel>> viewAllSections (Long placeId);
 
-    public ResponseEntity<List<SectionModel>> viewAllSectionsByName (Long placeId);
+    ResponseEntity<List<SectionModel>> viewAllSectionsByName (Long placeId);
 
-    public ResponseEntity<Optional<SectionModel>> viewOneSection (Long sectionId);
+    ResponseEntity<Optional<SectionModel>> viewOneSection (Long sectionId);
 
-    public ResponseEntity<SectionModel> removeSection (Long sectionId);
+    ResponseEntity<SectionModel> removeSection (Long sectionId);
 
-    public ResponseEntity<SectionModel> changeSection (@Valid BindingResult result, Long sectionId);
+    ResponseEntity<SectionModel> changeSection (@Valid BindingResult result, Long sectionId);
 
 }
