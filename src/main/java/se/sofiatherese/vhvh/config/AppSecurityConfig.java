@@ -27,10 +27,11 @@ public class AppSecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests( requests -> requests
-                        .requestMatchers("/api/**", "http://localhost:3000/").permitAll()
-                        .requestMatchers("http://localhost:3000/admin").hasRole("ADMIN")
                         .requestMatchers("http://localhost:3000/login")
                                 .anonymous()
+                        .requestMatchers("/api/**", "http://localhost:3000/", "http://localhost:3000/404", "http://localhost:3000/comingSoon", "http://localhost:3000/createAccount").permitAll()
+                        .requestMatchers("http://localhost:3000/admin").hasRole("ADMIN")
+                        .requestMatchers("http://localhost:3000/myPage").hasRole("USER")
                         .anyRequest()
                         .authenticated()
                 )
