@@ -1,7 +1,7 @@
 package se.sofiatherese.vhvh.place;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,14 +12,10 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class PlaceController {
 
     private final PlaceService placeService;
-
-    @Autowired
-    public PlaceController(PlaceService placeService) {
-        this.placeService = placeService;
-    }
 
     @PostMapping("/createplace/{username}")
     public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, @PathVariable String username){

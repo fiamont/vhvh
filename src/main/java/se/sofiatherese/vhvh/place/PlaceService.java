@@ -1,6 +1,7 @@
 package se.sofiatherese.vhvh.place;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
-
     private final UserRepository userRepository;
-
-    @Autowired
-    public PlaceService(PlaceRepository placeRepository, UserRepository userRepository) {
-        this.placeRepository = placeRepository;
-        this.userRepository = userRepository;
-    }
 
     public ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, String username) {
         if (result.hasErrors()) {
