@@ -4,24 +4,31 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
-@Entity
-@Table(name="users")
+@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="_user")
 public class UserModel implements UserDetails {
     @SequenceGenerator(name = "userIdGenerator", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
+    private Long userId;
     @NotEmpty
     @Email
+    @Column(unique = true)
     private String username;
     @Size(min=8, max=200)
     private String password;
@@ -29,16 +36,12 @@ public class UserModel implements UserDetails {
     private String firstname;
     @NotEmpty
     private String lastname;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<SimpleGrantedAuthority> authorities;
-    private boolean isAccountNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
-    private boolean isEnabled;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
@@ -47,83 +50,22 @@ public class UserModel implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public UserModel(String username, String password, String firstname, String lastname, Set<SimpleGrantedAuthority> authorities, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
-        this.username = username;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.authorities = authorities;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setAuthorities(Set<SimpleGrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        isAccountNonExpired = accountNonExpired;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        isAccountNonLocked = accountNonLocked;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        isCredentialsNonExpired = credentialsNonExpired;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+        return true;
     }
 }
