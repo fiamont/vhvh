@@ -2,13 +2,13 @@ package se.sofiatherese.vhvh.section;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import se.sofiatherese.vhvh.place.PlaceModel;
 
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "section")
 public class SectionModel {
@@ -23,7 +23,4 @@ public class SectionModel {
     @JoinColumn(name = "place_id", nullable = false)
     private PlaceModel placeModel;
 
-    public SectionModel(String sectionName) {
-        this.sectionName = sectionName;
-    }
 }

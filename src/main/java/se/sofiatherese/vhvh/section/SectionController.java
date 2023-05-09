@@ -1,7 +1,7 @@
 package se.sofiatherese.vhvh.section;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,43 +11,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class SectionController {
 
     private final SectionService sectionService;
 
-    @Autowired
-    public SectionController(SectionService sectionService) {
-        this.sectionService = sectionService;
+    @PostMapping("/createSection/{placeId}")
+    public ResponseEntity<SectionModel> createSection (@Valid @RequestBody SectionModel sectionModel, @PathVariable Long placeId, BindingResult result) {
+        return sectionService.makeSection(sectionModel, placeId, result);
     }
 
-    @PostMapping("/createSection")
-    public ResponseEntity<SectionModel> createSection (@Valid @RequestBody SectionModel sectionModel, final PlaceModel placeModel, BindingResult result) {
-        return sectionService.makeSection(sectionModel, placeModel, result);
+    @GetMapping("/showallsections/{placeId}")
+    public ResponseEntity<List<SectionModel>> showAllSections (@PathVariable Long placeId) {
+        return sectionService.viewAllSections(placeId);
     }
 
-    @GetMapping("/showallsections")
-    public ResponseEntity<List<SectionModel>> showAllSections () {
-        return sectionService.viewAllSections();
+    @GetMapping("/showallsectionsbyname/{placeId}")
+    public ResponseEntity<List<SectionModel>> showAllSectionsByName (@PathVariable Long placeId) {
+        return sectionService.viewAllSectionsByName(placeId);
     }
 
-    @GetMapping("/showallsectionsbyname")
-    public ResponseEntity<List<SectionModel>> showAllSectionsByName () {
-        return sectionService.viewAllSectionsByName();
+    @GetMapping("/showonesection/{sectionId}")
+    public ResponseEntity<Optional<SectionModel>> showOneSection (@PathVariable Long sectionId) {
+        return sectionService.viewOneSection(sectionId);
     }
 
-    @GetMapping("/showonesection/{sectionid}")
-    public ResponseEntity<Optional<SectionModel>> showOneSection (@PathVariable Long sectionid) {
-        return sectionService.viewOneSection(sectionid);
-    }
-
-    @DeleteMapping("/deletesection/{sectionid}")
-    public ResponseEntity<SectionModel> deleteSection (Long sectionId) {
+    @DeleteMapping("/deletesection/{sectionId}")
+    public ResponseEntity<SectionModel> deleteSection (@PathVariable Long sectionId) {
         return sectionService.removeSection(sectionId);
     }
 
-    @PutMapping("/updatesection/{sectionid}")
-    public ResponseEntity<SectionModel> updateSection (@PathVariable Long sectionid, @Valid @RequestBody SectionModel sectionModel, BindingResult result) {
-        return sectionService.changeSection(sectionid, sectionModel, result);
+    @PutMapping("/updatesection/{sectionId}")
+    public ResponseEntity<SectionModel> updateSection (@Valid BindingResult result, @PathVariable Long sectionId) {
+        return sectionService.changeSection(result, sectionId);
     }
 
 }
