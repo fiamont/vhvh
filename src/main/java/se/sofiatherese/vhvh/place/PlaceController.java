@@ -19,21 +19,21 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @CrossOrigin
-    @PostMapping("/createplace/{username}")
-    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, @PathVariable String username){
-        return placeService.createPlace(placeModel, result, username);
+    @PostMapping("/createplace/{userId}")
+    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, @PathVariable Long userId){
+        return placeService.createPlace(placeModel, result, userId);
     }
 
     @CrossOrigin
-    @GetMapping("/showallplaces/{username}")
-    public ResponseEntity<List<PlaceModel>> showAllPlaces (@PathVariable String username) {
-        return placeService.viewAllPlaces(username);
+    @GetMapping("/showallplaces/{userId}")
+    public ResponseEntity<List<PlaceModel>> showAllPlaces (@PathVariable Long userId) {
+        return placeService.viewAllPlaces(userId);
     }
 
     @CrossOrigin
-    @GetMapping("/showallplacesbyname/{username}")
-    public ResponseEntity<List<PlaceModel>> showAllPlacesByName (@PathVariable String username) {
-        return placeService.viewAllPlacesByName(username);
+    @GetMapping("/showallplacesbyname/{userId}")
+    public ResponseEntity<List<PlaceModel>> showAllPlacesByName (@PathVariable Long userId) {
+        return placeService.viewAllPlacesByName(userId);
     }
 
     @CrossOrigin

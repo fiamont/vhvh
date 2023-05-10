@@ -14,13 +14,13 @@ import java.util.Optional;
 @Service
 public interface PlaceService {
 
-    ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, String username);
+    ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, Long userId);
 
     List<PlaceModel> placeModelList (UserModel userModel, List<PlaceModel> allPlaces);
 
-    ResponseEntity<List<PlaceModel>> viewAllPlaces (String username);
+    ResponseEntity<List<PlaceModel>> viewAllPlaces (Long userId);
 
-    ResponseEntity<List<PlaceModel>> viewAllPlacesByName (String username);
+    ResponseEntity<List<PlaceModel>> viewAllPlacesByName (Long userId);
 
     ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeid);
 

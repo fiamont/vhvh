@@ -23,11 +23,11 @@ public class PlaceServiceImpl implements PlaceService{
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, String username) {
+    public ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, Long userId) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        UserModel userModel = userRepository.findByUsername(username).orElseThrow();
+        UserModel userModel = userRepository.findById(userId).orElseThrow();
 
         placeModel.setUserModel(userModel);
         placeRepository.save(placeModel);
@@ -46,9 +46,9 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<List<PlaceModel>> viewAllPlaces (String username) {
+    public ResponseEntity<List<PlaceModel>> viewAllPlaces (Long userId) {
         try {
-            UserModel userModel = userRepository.findByUsername(username).orElseThrow();
+            UserModel userModel = userRepository.findById(userId).orElseThrow();
             List<PlaceModel> allPlaces = placeRepository.findAll();
             List<PlaceModel> userPlaces = placeModelList(userModel, allPlaces);
             return new ResponseEntity<>(userPlaces, HttpStatus.OK);
@@ -58,9 +58,9 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<List<PlaceModel>> viewAllPlacesByName (String username) {
+    public ResponseEntity<List<PlaceModel>> viewAllPlacesByName (Long userId) {
         try {
-            UserModel userModel = userRepository.findByUsername(username).orElseThrow();
+            UserModel userModel = userRepository.findById(userId).orElseThrow();
             List<PlaceModel> allPlaces = placeRepository.orderByPlaceName();
             List<PlaceModel> userPlaces = placeModelList(userModel, allPlaces);
             return new ResponseEntity<>(userPlaces, HttpStatus.OK);
