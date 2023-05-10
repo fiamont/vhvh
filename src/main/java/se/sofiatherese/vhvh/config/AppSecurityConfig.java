@@ -1,46 +1,46 @@
 package se.sofiatherese.vhvh.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import se.sofiatherese.vhvh.user.UserService;
+import se.sofiatherese.vhvh.config.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class AppSecurityConfig {
 
-    private final AppPasswordConfig bcrypt;
-
-    private final UserService userService;
-
-    @Autowired
-    public AppSecurityConfig(AppPasswordConfig bcrypt, UserService userService) {
-        this.bcrypt = bcrypt;
-        this.userService = userService;
-    }
+    private final AppConfig appConfig;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf()
+                .disable()
                 .authorizeHttpRequests( requests -> requests
                         .requestMatchers("/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .and()
-                .authenticationProvider(authenticationOverride());
+                .authenticationProvider(appConfig.authenticationOverride())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors().configurationSource(request -> {
             CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
             corsConfiguration.addAllowedMethod("DELETE");
@@ -53,12 +53,4 @@ public class AppSecurityConfig {
         return http.build();
     }
 
-    public DaoAuthenticationProvider authenticationOverride() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-
-        provider.setUserDetailsService(userService);
-        provider.setPasswordEncoder(bcrypt.bcryptPasswordEncoder());
-
-        return provider;
-    }
 }
