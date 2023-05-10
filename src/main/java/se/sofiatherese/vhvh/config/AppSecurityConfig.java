@@ -24,23 +24,20 @@ public class AppSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf()
+                .httpBasic().and().csrf()
                 .disable()
-                .authorizeHttpRequests( requests -> requests
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest()
-                        .authenticated()
-                )
+                .authorizeHttpRequests()
+                .requestMatchers("/api/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
                 .authenticationProvider(appConfig.authenticationOverride())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         http.cors().configurationSource(request -> {
             CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
             corsConfiguration.addAllowedMethod("DELETE");
@@ -50,6 +47,8 @@ public class AppSecurityConfig {
             corsConfiguration.addAllowedMethod("PUT");
             return corsConfiguration;
         });
+
+
         return http.build();
     }
 
