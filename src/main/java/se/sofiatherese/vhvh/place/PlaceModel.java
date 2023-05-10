@@ -2,14 +2,16 @@ package se.sofiatherese.vhvh.place;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import se.sofiatherese.vhvh.user.UserModel;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "place")
 public class PlaceModel {
@@ -23,7 +25,4 @@ public class PlaceModel {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel userModel;
 
-    public PlaceModel(String placeName) {
-        this.placeName = placeName;
-    }
 }
