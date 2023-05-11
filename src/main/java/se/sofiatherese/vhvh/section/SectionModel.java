@@ -17,7 +17,7 @@ public class SectionModel {
 
     @SequenceGenerator(name = "sectionIdGenerator", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sectionIdGenerator")
     private Long sectionId;
     @NotEmpty
     private String sectionName;

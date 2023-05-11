@@ -19,7 +19,7 @@ import se.sofiatherese.vhvh.user.UserModel;
 public class PlaceModel {
     @SequenceGenerator(name = "placeIdGenerator", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "placeIdGenerator")
     private Long placeId;
     @NotEmpty
     private String placeName;

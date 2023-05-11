@@ -105,7 +105,7 @@ public class ArticleServiceImpl implements ArticleService {
             Optional<ArticleModel> usedArticle = articleRepository.findById(articleId);
             ArticleModel updatedArticle = usedArticle.get();
             updatedArticle.setArticleName(articleModel.getArticleName());
-            updatedArticle.setTypOfAmount(articleModel.getTypOfAmount());
+            updatedArticle.setTypeOfAmount(articleModel.getTypeOfAmount());
             updatedArticle.setArticleAmount(articleModel.getArticleAmount());
             updatedArticle.setBestBefore(articleModel.getBestBefore());
             articleRepository.save(updatedArticle);

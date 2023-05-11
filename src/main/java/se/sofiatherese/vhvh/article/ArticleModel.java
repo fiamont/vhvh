@@ -20,12 +20,12 @@ import java.time.LocalDate;
 public class ArticleModel {
     @SequenceGenerator(name = "articleIdGenerator", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "articleIdGenerator")
     private Long articleId;
     @NotEmpty
     private String articleName;
     private Integer articleAmount;
-    private String typOfAmount;
+    private String typeOfAmount;
     private LocalDate bestBefore;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
