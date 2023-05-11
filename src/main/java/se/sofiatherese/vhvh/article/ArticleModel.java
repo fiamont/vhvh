@@ -2,85 +2,34 @@ package se.sofiatherese.vhvh.article;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.sofiatherese.vhvh.user.UserModel;
+import se.sofiatherese.vhvh.section.SectionModel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "articles")
 public class ArticleModel {
+    @SequenceGenerator(name = "articleIdGenerator", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long articleId;
-
-    @Column(name="articleName")
+    @NotEmpty
     private String articleName;
-    @Column(name="articleAmount")
-    private int articleAmount;
+    private Integer articleAmount;
+    private String typOfAmount;
+    private LocalDate bestBefore;
 
-    @ManyToOne
-    @JoinColumn(name="sectionId")
-    private SectionModel section;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="section_id", nullable = false)
+    private SectionModel sectionModel;
 
-    @ManyToOne
-    @JoinColumn(name="placeId")
-    private PlaceModel place;
-
-    @ManyToMany(mappedBy = "sharedPlaces")
-    private Set<UserModel> sharedUsers = new HashSet<>();
-
-    public ArticleModel(String articleName, int articleAmount, SectionModel section, PlaceModel place, Set<UserModel> sharedUsers) {
-        this.articleName = articleName;
-        this.articleAmount = articleAmount;
-        this.section = section;
-        this.place = place;
-        this.sharedUsers = sharedUsers;
-    }
-
-    public Long getArticleId() {
-        return articleId;
-    }
-
-    public String getArticleName() {
-        return articleName;
-    }
-
-    public void setArticleName(String articleName) {
-        this.articleName = articleName;
-    }
-
-    public int getArticleAmount() {
-        return articleAmount;
-    }
-
-    public void setArticleAmount(int articleAmount) {
-        this.articleAmount = articleAmount;
-    }
-
-    public SectionModel getSection() {
-        return section;
-    }
-
-    public void setSectionModel(SectionModel section) {
-        this.section = section;
-    }
-
-    public PlaceModel getPlace() {
-        return place;
-    }
-
-    public void setPlaceModel(PlaceModel place) {
-        this.place = place;
-    }
-
-    public Set<UserModel> getSharedUsers() {
-        return sharedUsers;
-    }
-
-    public void setSharedUsers(Set<UserModel> sharedUsers) {
-        this.sharedUsers = sharedUsers;
-    }
 }

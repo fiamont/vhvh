@@ -1,11 +1,8 @@
 package se.sofiatherese.vhvh.place;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.user.UserModel;
 
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.Optional;
 @Service
 public interface PlaceService {
 
-    ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, Long userId);
+    ResponseEntity<PlaceModel> createPlace (PlaceModel placeModel, BindingResult result, Long userId);
 
     List<PlaceModel> placeModelList (UserModel userModel, List<PlaceModel> allPlaces);
 
@@ -22,9 +19,9 @@ public interface PlaceService {
 
     ResponseEntity<List<PlaceModel>> viewAllPlacesByName (Long userId);
 
-    ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeid);
+    ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeId);
 
     ResponseEntity<PlaceModel> removePlace(Long placeId);
 
-    ResponseEntity<PlaceModel> updatePlace(@PathVariable Long placeId, @Valid @RequestBody PlaceModel placeModel, BindingResult result);
+    ResponseEntity<PlaceModel> updatePlace(Long placeId, PlaceModel placeModel, BindingResult result);
 }

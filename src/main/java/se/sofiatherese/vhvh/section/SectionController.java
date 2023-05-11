@@ -50,8 +50,8 @@ public class SectionController {
 
     @CrossOrigin
     @PutMapping("/updatesection/{sectionId}")
-    public ResponseEntity<SectionModel> updateSection (@Valid BindingResult result, @PathVariable Long sectionId) {
-        return sectionService.changeSection(result, sectionId);
+    public ResponseEntity<SectionModel> updateSection (@Valid @RequestBody SectionModel sectionModel, BindingResult result, @PathVariable Long sectionId) {
+        return sectionService.changeSection(sectionModel, result, sectionId);
     }
 
 }

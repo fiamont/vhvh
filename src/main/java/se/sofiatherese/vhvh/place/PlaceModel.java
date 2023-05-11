@@ -1,5 +1,6 @@
 package se.sofiatherese.vhvh.place;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import se.sofiatherese.vhvh.user.UserModel;
 @Builder
 @Entity
 @Table(name = "place")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PlaceModel {
     @SequenceGenerator(name = "placeIdGenerator", allocationSize = 1)
     @Id
