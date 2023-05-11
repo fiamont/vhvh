@@ -1,31 +1,23 @@
 package se.sofiatherese.vhvh.user;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import se.sofiatherese.vhvh.auth.AuthResponse;
 import se.sofiatherese.vhvh.config.AppConfig;
-import se.sofiatherese.vhvh.config.jwt.JwtService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AppConfig appConfig;
-
-    private final JwtService jwtService;
-
-    public UserServiceImpl(UserRepository userRepository, AppConfig appConfig, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.appConfig = appConfig;
-        this.jwtService = jwtService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -41,9 +33,6 @@ public class UserServiceImpl implements UserService {
 
             userModel.setPassword(appConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
             userRepository.save(userModel);
-            String jwtToken = jwtService.generateToken(userModel);
-            AuthResponse.builder().token(jwtToken).build();
-            System.out.println(AuthResponse.builder().token(jwtToken).build());
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
