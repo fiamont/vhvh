@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import se.sofiatherese.vhvh.user.UserModel;
 
+import java.util.Map;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -33,4 +35,11 @@ public class AuthController {
     public ResponseEntity<UserDetails> getAuthenticatedUser (Authentication authentication) {
         return authService.getAuthenticatedUser(authentication);
     }
+
+    @CrossOrigin
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout () {
+        return authService.notAuthenticated();
+    }
+
 }
