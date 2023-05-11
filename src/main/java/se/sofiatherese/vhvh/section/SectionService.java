@@ -1,6 +1,5 @@
 package se.sofiatherese.vhvh.section;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -12,7 +11,7 @@ import java.util.Optional;
 @Service
 public interface SectionService {
 
-    ResponseEntity<SectionModel> makeSection (@Valid SectionModel sectionModel, Long placeId, BindingResult result);
+    ResponseEntity<SectionModel> makeSection (SectionModel sectionModel, Long placeId, BindingResult result);
 
     List<SectionModel> sectionModelList (PlaceModel placeModel, List<SectionModel> allSections);
 
@@ -24,6 +23,6 @@ public interface SectionService {
 
     ResponseEntity<SectionModel> removeSection (Long sectionId);
 
-    ResponseEntity<SectionModel> changeSection (@Valid BindingResult result, Long sectionId);
+    ResponseEntity<SectionModel> changeSection (SectionModel sectionModel, BindingResult result, Long sectionId);
 
 }

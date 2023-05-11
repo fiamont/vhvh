@@ -1,6 +1,5 @@
 package se.sofiatherese.vhvh.section;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class SectionServiceImpl implements SectionService{
     private final PlaceRepository placeRepository;
 
     @Override
-    public ResponseEntity<SectionModel> makeSection (@Valid SectionModel sectionModel, Long placeId, BindingResult result){
+    public ResponseEntity<SectionModel> makeSection (SectionModel sectionModel, Long placeId, BindingResult result){
         try {
             if (result.hasErrors()) {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -91,13 +90,14 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public ResponseEntity<SectionModel> changeSection (@Valid BindingResult result, Long sectionId) {
+    public ResponseEntity<SectionModel> changeSection (SectionModel sectionModel, BindingResult result, Long sectionId) {
         try {
             if (result.hasErrors()) {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
             Optional<SectionModel> usedSection = sectionRepository.findById(sectionId);
             SectionModel updatedSection = usedSection.get();
+            updatedSection.setSectionName(sectionModel.getSectionName());
 
             sectionRepository.save(updatedSection);
             return new ResponseEntity<>(updatedSection, HttpStatus.OK);

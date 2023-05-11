@@ -1,5 +1,6 @@
 package se.sofiatherese.vhvh.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,10 +22,11 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name="_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserModel implements UserDetails {
     @SequenceGenerator(name = "userIdGenerator", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "userIdGenerator")
     private Long userId;
     @NotEmpty
     @Email

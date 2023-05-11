@@ -1,13 +1,10 @@
 package se.sofiatherese.vhvh.place;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import se.sofiatherese.vhvh.user.UserModel;
 import se.sofiatherese.vhvh.user.UserRepository;
 
@@ -23,7 +20,7 @@ public class PlaceServiceImpl implements PlaceService{
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<PlaceModel> createPlace (@Valid PlaceModel placeModel, BindingResult result, Long userId) {
+    public ResponseEntity<PlaceModel> createPlace (PlaceModel placeModel, BindingResult result, Long userId) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -70,9 +67,9 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeid) {
+    public ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeId) {
         try {
-            return ResponseEntity.ok(this.placeRepository.findById(placeid));
+            return ResponseEntity.ok(this.placeRepository.findById(placeId));
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -89,7 +86,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<PlaceModel> updatePlace(@PathVariable Long placeId, @Valid @RequestBody PlaceModel placeModel, BindingResult result) {
+    public ResponseEntity<PlaceModel> updatePlace(Long placeId, PlaceModel placeModel, BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
