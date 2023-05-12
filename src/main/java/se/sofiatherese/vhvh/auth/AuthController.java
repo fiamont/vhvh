@@ -2,11 +2,13 @@ package se.sofiatherese.vhvh.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import se.sofiatherese.vhvh.user.UserModel;
+
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,4 +29,17 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) throws Exception {
         return ResponseEntity.ok(authService.authenticate(request));
     }
+
+    @CrossOrigin
+    @GetMapping("/getAuthenticatedUser")
+    public ResponseEntity<UserDetails> getAuthenticatedUser (Authentication authentication) {
+        return authService.getAuthenticatedUser(authentication);
+    }
+
+    @CrossOrigin
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout () {
+        return authService.notAuthenticated();
+    }
+
 }
