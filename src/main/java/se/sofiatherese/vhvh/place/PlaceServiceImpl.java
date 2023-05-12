@@ -20,15 +20,20 @@ public class PlaceServiceImpl implements PlaceService{
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<PlaceModel> createPlace (PlaceModel placeModel, BindingResult result, Long userId) {
+    public ResponseEntity<PlaceModelDTO> createPlace (PlaceModelDTO placeModelDTO, BindingResult result, Long userId) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        PlaceModel placeModel = PlaceModel.builder().placeName(placeModelDTO.getPlaceName()).build();
         UserModel userModel = userRepository.findById(userId).orElseThrow();
-
         placeModel.setUserModel(userModel);
         placeRepository.save(placeModel);
-        return new ResponseEntity<>(placeModel, HttpStatus.CREATED);
+        PlaceModelDTO createdPlaceModelDTO = PlaceModelDTO.builder()
+                        .placeId(placeModel.getPlaceId())
+                        .placeName(placeModel.getPlaceName())
+                        .userId(placeModel.getUserModel().getUserId())
+                        .build();
+        return new ResponseEntity<>(createdPlaceModelDTO, HttpStatus.CREATED);
     }
 
     @Override

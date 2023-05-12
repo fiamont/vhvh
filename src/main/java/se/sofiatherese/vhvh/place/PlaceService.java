@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public interface PlaceService {
 
-    ResponseEntity<PlaceModel> createPlace (PlaceModel placeModel, BindingResult result, Long userId);
+    ResponseEntity<PlaceModelDTO> createPlace (PlaceModelDTO placeModelDTO, BindingResult result, Long userId);
 
     List<PlaceModel> placeModelList (UserModel userModel, List<PlaceModel> allPlaces);
 
