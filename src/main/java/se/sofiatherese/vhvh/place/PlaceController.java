@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
@@ -26,19 +25,19 @@ public class PlaceController {
 
     @CrossOrigin
     @GetMapping("/showallplaces/{userId}")
-    public ResponseEntity<List<PlaceModel>> showAllPlaces (@PathVariable Long userId) {
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlaces (@PathVariable Long userId) {
         return placeService.viewAllPlaces(userId);
     }
 
     @CrossOrigin
     @GetMapping("/showallplacesbyname/{userId}")
-    public ResponseEntity<List<PlaceModel>> showAllPlacesByName (@PathVariable Long userId) {
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlacesByName (@PathVariable Long userId) {
         return placeService.viewAllPlacesByName(userId);
     }
 
     @CrossOrigin
     @GetMapping("/showoneplace/{placeId}")
-    public ResponseEntity<Optional<PlaceModel>> showOnePlace (@PathVariable Long placeId) {
+    public ResponseEntity<PlaceModelDTO> showOnePlace (@PathVariable Long placeId) {
         return placeService.getOnePlace(placeId);
     }
 

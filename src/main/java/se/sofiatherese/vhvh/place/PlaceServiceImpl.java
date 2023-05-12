@@ -36,45 +36,52 @@ public class PlaceServiceImpl implements PlaceService{
         return new ResponseEntity<>(createdPlaceModelDTO, HttpStatus.CREATED);
     }
 
-    @Override
-    public List<PlaceModel> placeModelList (UserModel userModel, List<PlaceModel> allPlaces) {
-        List<PlaceModel> userPlaces = new ArrayList<>();
-        for (PlaceModel place : allPlaces) {
-            if (place.getUserModel().equals(userModel)) {
-                userPlaces.add(place);
-            }
+    public List<PlaceModelDTO> fromModeltoDTO(List<PlaceModel> allPlaces) {
+        List<PlaceModelDTO> allPlacesDTO = new ArrayList<>();
+        for (PlaceModel placeModel : allPlaces) {
+            allPlacesDTO.add(PlaceModelDTO.builder()
+                    .placeId(placeModel.getPlaceId())
+                    .placeName(placeModel.getPlaceName())
+                    .userId(placeModel.getUserModel().getUserId())
+                    .build());
         }
-        return userPlaces;
+        return allPlacesDTO;
     }
 
     @Override
-    public ResponseEntity<List<PlaceModel>> viewAllPlaces (Long userId) {
+    public ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (Long userId) {
         try {
             UserModel userModel = userRepository.findById(userId).orElseThrow();
-            List<PlaceModel> allPlaces = placeRepository.findAll();
-            List<PlaceModel> userPlaces = placeModelList(userModel, allPlaces);
-            return new ResponseEntity<>(userPlaces, HttpStatus.OK);
+            List<PlaceModel> allPlaces = placeRepository.findByUserModel(userModel);
+            List<PlaceModelDTO> allPlacesDTO = fromModeltoDTO(allPlaces);
+            return new ResponseEntity<>(allPlacesDTO, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (Long userId) {
+        try {
+            UserModel userModel = userRepository.findById(userId).orElseThrow();
+            List<PlaceModel> allPlaces = placeRepository.findByUserModelAndOrderByPlaceName(userModel);
+            List<PlaceModelDTO> allPlacesDTO = fromModeltoDTO(allPlaces);
+            return new ResponseEntity<>(allPlacesDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    public ResponseEntity<List<PlaceModel>> viewAllPlacesByName (Long userId) {
+    public ResponseEntity<PlaceModelDTO> getOnePlace(Long placeId) {
         try {
-            UserModel userModel = userRepository.findById(userId).orElseThrow();
-            List<PlaceModel> allPlaces = placeRepository.orderByPlaceName();
-            List<PlaceModel> userPlaces = placeModelList(userModel, allPlaces);
-            return new ResponseEntity<>(userPlaces, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Override
-    public ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeId) {
-        try {
-            return ResponseEntity.ok(this.placeRepository.findById(placeId));
+            PlaceModel placeModel = placeRepository.findByPlaceId(placeId);
+            PlaceModelDTO placeModelDTO = PlaceModelDTO.builder()
+                    .placeId(placeModel.getPlaceId())
+                    .placeName(placeModel.getPlaceName())
+                    .userId(placeModel.getUserModel().getUserId())
+                    .build();
+            return new ResponseEntity<>(placeModelDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
