@@ -49,9 +49,9 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (Long userId) {
+    public ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (String username) {
         try {
-            UserModel userModel = userRepository.findById(userId).orElseThrow();
+            UserModel userModel = userRepository.findByUsername(username).orElseThrow();
             List<PlaceModel> allPlaces = placeRepository.findByUserModel(userModel);
             List<PlaceModelDTO> allPlacesDTO = fromModeltoDTO(allPlaces);
             return new ResponseEntity<>(allPlacesDTO, HttpStatus.OK);
@@ -61,9 +61,9 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (Long userId) {
+    public ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (String username) {
         try {
-            UserModel userModel = userRepository.findById(userId).orElseThrow();
+            UserModel userModel = userRepository.findByUsername(username).orElseThrow();
             List<PlaceModel> allPlaces = placeRepository.findByUserModelAndOrderByPlaceName(userModel);
             List<PlaceModelDTO> allPlacesDTO = fromModeltoDTO(allPlaces);
             return new ResponseEntity<>(allPlacesDTO, HttpStatus.OK);

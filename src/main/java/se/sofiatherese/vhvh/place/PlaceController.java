@@ -24,15 +24,15 @@ public class PlaceController {
     }
 
     @CrossOrigin
-    @GetMapping("/showallplaces/{userId}")
-    public ResponseEntity<List<PlaceModelDTO>> showAllPlaces (@PathVariable Long userId) {
-        return placeService.viewAllPlaces(userId);
+    @GetMapping("/showallplaces/{username}")
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlaces (@PathVariable String username) {
+        return placeService.viewAllPlaces(username);
     }
 
     @CrossOrigin
-    @GetMapping("/showallplacesbyname/{userId}")
-    public ResponseEntity<List<PlaceModelDTO>> showAllPlacesByName (@PathVariable Long userId) {
-        return placeService.viewAllPlacesByName(userId);
+    @GetMapping("/showallplacesbyname/{username}")
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlacesByName (@PathVariable String username) {
+        return placeService.viewAllPlacesByName(username);
     }
 
     @CrossOrigin

@@ -11,9 +11,9 @@ public interface PlaceService {
 
     ResponseEntity<PlaceModelDTO> createPlace (PlaceModelDTO placeModelDTO, BindingResult result, Long userId);
 
-    ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (Long userId);
+    ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (String username);
 
-    ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (Long userId);
+    ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (String username);
 
     ResponseEntity<PlaceModelDTO> getOnePlace(Long placeId);
 
