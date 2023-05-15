@@ -15,8 +15,6 @@ public class AuthResponse {
 
     @JsonProperty
     private String token;
-    private Long userId;
-    private String username;
     private UserRole userRole;
 
 }

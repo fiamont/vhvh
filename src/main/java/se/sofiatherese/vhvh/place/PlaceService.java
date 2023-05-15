@@ -3,25 +3,22 @@ package se.sofiatherese.vhvh.place;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import se.sofiatherese.vhvh.user.UserModel;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface PlaceService {
 
-    ResponseEntity<PlaceModel> createPlace (PlaceModel placeModel, BindingResult result, Long userId);
+    ResponseEntity<PlaceModelDTO> createPlace (PlaceModelDTO placeModelDTO, BindingResult result, String username);
 
-    List<PlaceModel> placeModelList (UserModel userModel, List<PlaceModel> allPlaces);
+    ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (String username);
 
-    ResponseEntity<List<PlaceModel>> viewAllPlaces (Long userId);
+    ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (String username);
 
-    ResponseEntity<List<PlaceModel>> viewAllPlacesByName (Long userId);
-
-    ResponseEntity<Optional<PlaceModel>> getOnePlace(Long placeId);
+    ResponseEntity<PlaceModelDTO> getOnePlace(Long placeId);
 
     ResponseEntity<PlaceModel> removePlace(Long placeId);
 
     ResponseEntity<PlaceModel> updatePlace(Long placeId, PlaceModel placeModel, BindingResult result);
+
 }

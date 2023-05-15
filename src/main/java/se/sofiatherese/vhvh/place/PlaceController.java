@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
@@ -19,26 +18,26 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @CrossOrigin
-    @PostMapping("/createplace/{userId}")
-    public ResponseEntity<PlaceModel> createPlace (@Valid @RequestBody PlaceModel placeModel, BindingResult result, @PathVariable Long userId){
-        return placeService.createPlace(placeModel, result, userId);
+    @PostMapping("/createplace/{username}")
+    public ResponseEntity<PlaceModelDTO> createPlace (@Valid @RequestBody PlaceModelDTO placeModelDTO, BindingResult result, @PathVariable String username){
+        return placeService.createPlace(placeModelDTO, result, username);
     }
 
     @CrossOrigin
-    @GetMapping("/showallplaces/{userId}")
-    public ResponseEntity<List<PlaceModel>> showAllPlaces (@PathVariable Long userId) {
-        return placeService.viewAllPlaces(userId);
+    @GetMapping("/showallplaces/{username}")
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlaces (@PathVariable String username) {
+        return placeService.viewAllPlaces(username);
     }
 
     @CrossOrigin
-    @GetMapping("/showallplacesbyname/{userId}")
-    public ResponseEntity<List<PlaceModel>> showAllPlacesByName (@PathVariable Long userId) {
-        return placeService.viewAllPlacesByName(userId);
+    @GetMapping("/showallplacesbyname/{username}")
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlacesByName (@PathVariable String username) {
+        return placeService.viewAllPlacesByName(username);
     }
 
     @CrossOrigin
     @GetMapping("/showoneplace/{placeId}")
-    public ResponseEntity<Optional<PlaceModel>> showOnePlace (@PathVariable Long placeId) {
+    public ResponseEntity<PlaceModelDTO> showOnePlace (@PathVariable Long placeId) {
         return placeService.getOnePlace(placeId);
     }
 
