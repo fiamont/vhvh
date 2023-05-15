@@ -30,8 +30,10 @@ public class UserServiceImpl implements UserService {
             if (result.hasErrors()) {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
             userModel.setPassword(appConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
+            if (userRepository.existsByUsername(userModel.getUsername())) {
+                return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            }
             userRepository.save(userModel);
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         } catch (Exception e) {
