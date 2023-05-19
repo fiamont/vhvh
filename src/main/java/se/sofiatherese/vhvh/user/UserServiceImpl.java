@@ -78,6 +78,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<List<UserModel>> sortAllUsersByRole() {
+        try {
+            return ResponseEntity.ok(this.userRepository.orderByRole());
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ResponseEntity<UserModel> createUserAnna() {
         try {
             UserModel anna = UserModel.builder()
