@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
     @Query("SELECT s FROM UserModel s ORDER BY s.lastname asc")
     List<UserModel> orderByLastname ();
+
+    UserModel deleteByUsername (String username);
 }
