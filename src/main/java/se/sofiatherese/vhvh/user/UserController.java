@@ -32,9 +32,9 @@ public class UserController {
     }
 
     @CrossOrigin
-    @GetMapping("/showuser/{userid}")
-    public ResponseEntity<Optional<UserModel>> showUser (@PathVariable Long userid) {
-        return userService.getOneUser(userid);
+    @GetMapping("/showuser/{username}")
+    public ResponseEntity<Optional<UserModel>> showUser (@PathVariable String username) {
+        return userService.getOneUser(username);
     }
 
     @CrossOrigin
@@ -64,14 +64,14 @@ public class UserController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/deleteuser/{userid}")
-    public ResponseEntity<UserModel> deleteUser (@PathVariable Long userid) {
-        return userService.removeUser(userid);
+    @DeleteMapping("/deleteuser/{username}")
+    public ResponseEntity<UserModel> deleteUser (@PathVariable String username) {
+        return userService.removeUser(username);
     }
 
     @CrossOrigin
-    @PutMapping("/updateuser/{userid}")
-    public ResponseEntity<UserModel> updateUser (@PathVariable Long userid, @RequestBody final UserModel userModel) {
-        return userService.updateUser(userid, userModel);
+    @PutMapping("/updateuser/{username}")
+    public ResponseEntity<UserModel> updateUser (@PathVariable String username, @RequestBody final UserModel userModel) {
+        return userService.updateUser(username, userModel);
     }
 }

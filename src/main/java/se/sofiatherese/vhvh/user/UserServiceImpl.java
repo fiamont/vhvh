@@ -51,9 +51,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Optional<UserModel>> getOneUser(Long userid) {
+    public ResponseEntity<Optional<UserModel>> getOneUser(String username) {
         try {
-            return ResponseEntity.ok(this.userRepository.findById(userid));
+            return ResponseEntity.ok(this.userRepository.findByUsername(username));
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -114,9 +114,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserModel> removeUser(Long userid) {
+    public ResponseEntity<UserModel> removeUser(String username) {
         try {
-            userRepository.deleteById(userid);
+            userRepository.deleteByUsername(username);
             return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -124,12 +124,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserModel> updateUser(Long userId, final UserModel userModel) {
-        Optional<UserModel> usedUser = userRepository.findById(userId);
+    public ResponseEntity<UserModel> updateUser(String username, final UserModel userModel) {
+        Optional<UserModel> usedUser = userRepository.findByUsername(username);
         if (usedUser.isPresent()) {
             UserModel updatedUser = usedUser.get();
             updatedUser.setUsername(userModel.getUsername());
-            updatedUser.setPassword(userModel.getPassword());
+            updatedUser.setPassword(appConfig.bcryptPasswordEncoder().encode(userModel.getPassword()));
             updatedUser.setFirstname(userModel.getFirstname());
             updatedUser.setLastname(userModel.getLastname());
             updatedUser.setRole(userModel.getRole());

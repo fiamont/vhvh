@@ -18,7 +18,7 @@ public interface UserService extends UserDetailsService {
 
     ResponseEntity<List<UserModel>> viewAllUsersAllInfo();
 
-    ResponseEntity<Optional<UserModel>> getOneUser(Long userid);
+    ResponseEntity<Optional<UserModel>> getOneUser(String username);
 
     ResponseEntity<List<UserModel>> sortAllUsersByFirstname();
 
@@ -28,7 +28,7 @@ public interface UserService extends UserDetailsService {
 
     ResponseEntity<UserModel> createUserBritta();
 
-    ResponseEntity<UserModel> removeUser(Long userid);
+    ResponseEntity<UserModel> removeUser(String username);
 
-    ResponseEntity<UserModel> updateUser(Long userId, final UserModel userModel);
+    ResponseEntity<UserModel> updateUser(String username, final UserModel userModel);
 }
