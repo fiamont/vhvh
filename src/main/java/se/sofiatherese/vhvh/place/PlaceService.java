@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface PlaceService {
 
-    ResponseEntity<PlaceModelDTO> createPlace (PlaceModelDTO placeModelDTO, BindingResult result, String username);
+    ResponseEntity<PlaceModelDTO> createPlace (PlaceModelDTO placeModelDTO, BindingResult result, String username, PlaceModel placeModel);
 
     ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (String username);
 
