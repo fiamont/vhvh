@@ -19,8 +19,8 @@ public class PlaceController {
 
     @CrossOrigin
     @PostMapping("/createplace/{username}")
-    public ResponseEntity<PlaceModelDTO> createPlace (@Valid @RequestBody PlaceModelDTO placeModelDTO, BindingResult result, @PathVariable String username){
-        return placeService.createPlace(placeModelDTO, result, username);
+    public ResponseEntity<PlaceModelDTO> createPlace (@Valid @RequestBody PlaceModelDTO placeModelDTO, PlaceModel placeModels, BindingResult result, @PathVariable String username){
+        return placeService.createPlace(placeModelDTO, result, username, placeModels);
     }
 
     @CrossOrigin
