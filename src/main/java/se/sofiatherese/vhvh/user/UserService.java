@@ -24,6 +24,8 @@ public interface UserService extends UserDetailsService {
 
     ResponseEntity<List<UserModel>> sortAllUsersByLastname();
 
+    ResponseEntity<List<UserModel>> sortAllUsersByRole();
+
     ResponseEntity<UserModel> createUserAnna();
 
     ResponseEntity<UserModel> createUserBritta();

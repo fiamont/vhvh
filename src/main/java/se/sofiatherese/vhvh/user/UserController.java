@@ -50,6 +50,10 @@ public class UserController {
     }
 
     @CrossOrigin
+    @GetMapping("/showusersbyrole")
+    public ResponseEntity<List<UserModel>> showUsersByRole() { return userService.sortAllUsersByRole(); }
+
+    @CrossOrigin
     @GetMapping("/saveuseranna")
     public ResponseEntity<UserModel> registerUserAnna (){
 
