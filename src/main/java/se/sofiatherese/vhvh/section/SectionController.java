@@ -21,7 +21,7 @@ public class SectionController {
     @CrossOrigin
     @PostMapping("/createSection/{placeId}")
     public ResponseEntity<SectionModel> createSection (@Valid @RequestBody SectionModel sectionModel, @PathVariable Long placeId, BindingResult result) {
-        return sectionService.makeSection(sectionModel, placeId, result);
+        return sectionService.createSection(sectionModel, placeId, result);
     }
 
     @CrossOrigin
