@@ -20,12 +20,22 @@ public class SectionServiceImpl implements SectionService{
     private final PlaceRepository placeRepository;
 
     @Override
-    public ResponseEntity<SectionModel> makeSection (SectionModel sectionModel, Long placeId, BindingResult result){
+    public ResponseEntity<SectionModel> createSection(SectionModel sectionModel, Long placeId, BindingResult result){
         try {
             if (result.hasErrors()) {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            PlaceModel placeModel = placeRepository.findByPlaceId(placeId);
+
+            Optional<PlaceModel> placeModelOptional = placeRepository.findById(placeId);
+            if (placeModelOptional.isEmpty()) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+
+            PlaceModel placeModel = placeModelOptional.get();
+
+            if(sectionRepository.existsBySectionNameAndPlaceModel(sectionModel.getSectionName(), placeModel)) {
+                return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            }
             sectionModel.setPlaceModel(placeModel);
             sectionRepository.save(sectionModel);
             return new ResponseEntity<>(sectionModel, HttpStatus.CREATED);

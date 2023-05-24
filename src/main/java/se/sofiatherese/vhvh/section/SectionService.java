@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public interface SectionService {
 
-    ResponseEntity<SectionModel> makeSection (SectionModel sectionModel, Long placeId, BindingResult result);
+    ResponseEntity<SectionModel> createSection(SectionModel sectionModel, Long placeId, BindingResult result);
 
     List<SectionModel> sectionModelList (PlaceModel placeModel, List<SectionModel> allSections);
 
