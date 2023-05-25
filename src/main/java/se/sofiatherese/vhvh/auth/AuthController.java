@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import se.sofiatherese.vhvh.user.UserModel;
 
 import java.util.Map;
 
@@ -20,18 +19,8 @@ public class AuthController {
     private final AuthService authService;
 
     @CrossOrigin
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) throws Exception {
-        try {
-            return ResponseEntity.ok(authService.authenticate(request));
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) throws Exception {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request){
         try {
             return ResponseEntity.ok(authService.authenticate(request));
         } catch (Exception e){
