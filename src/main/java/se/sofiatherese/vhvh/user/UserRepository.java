@@ -22,5 +22,5 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
     @Query("SELECT s FROM UserModel s ORDER BY s.role asc")
     List<UserModel> orderByRole();
-    UserModel deleteByUsername (String username);
+    void deleteByUsername (String username);
 }
