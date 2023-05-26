@@ -106,12 +106,14 @@ public class SectionServiceImpl implements SectionService{
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
             Optional<SectionModel> usedSection = sectionRepository.findById(sectionId);
-            SectionModel updatedSection = usedSection.get();
-            updatedSection.setSectionName(sectionModel.getSectionName());
+            if(usedSection.isPresent()){
+                SectionModel updatedSection = usedSection.get();
+                updatedSection.setSectionName(sectionModel.getSectionName());
 
-            sectionRepository.save(updatedSection);
-            return new ResponseEntity<>(updatedSection, HttpStatus.OK);
-
+                sectionRepository.save(updatedSection);
+                return new ResponseEntity<>(updatedSection, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
