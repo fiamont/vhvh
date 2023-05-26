@@ -103,13 +103,16 @@ public class ArticleServiceImpl implements ArticleService {
         }
         try {
             Optional<ArticleModel> usedArticle = articleRepository.findById(articleId);
-            ArticleModel updatedArticle = usedArticle.get();
-            updatedArticle.setArticleName(articleModel.getArticleName());
-            updatedArticle.setTypeOfAmount(articleModel.getTypeOfAmount());
-            updatedArticle.setArticleAmount(articleModel.getArticleAmount());
-            updatedArticle.setBestBefore(articleModel.getBestBefore());
-            articleRepository.save(updatedArticle);
-            return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
+            if(usedArticle.isPresent()){
+                ArticleModel updatedArticle = usedArticle.get();
+                updatedArticle.setArticleName(articleModel.getArticleName());
+                updatedArticle.setTypeOfAmount(articleModel.getTypeOfAmount());
+                updatedArticle.setArticleAmount(articleModel.getArticleAmount());
+                updatedArticle.setBestBefore(articleModel.getBestBefore());
+                articleRepository.save(updatedArticle);
+                return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
