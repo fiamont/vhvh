@@ -25,22 +25,18 @@ public class PlaceServiceImpl implements PlaceService{
             if (result.hasErrors()) {
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
             if (placeRepository.existsByPlaceNameAndUserModel_Username(placeModelDTO.getPlaceName(), username)) {
                 return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             }
-
             PlaceModel placeModel = PlaceModel.builder().placeName(placeModelDTO.getPlaceName()).build();
             UserModel userModel = userRepository.findByUsername(username).orElseThrow();
             placeModel.setUserModel(userModel);
             placeRepository.save(placeModel);
-
             PlaceModelDTO createdPlaceModelDTO = PlaceModelDTO.builder()
                     .placeId(placeModel.getPlaceId())
                     .placeName(placeModel.getPlaceName())
                     .userId(placeModel.getUserModel().getUserId())
                     .build();
-
             return new ResponseEntity<>(createdPlaceModelDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -115,11 +111,13 @@ public class PlaceServiceImpl implements PlaceService{
         }
         try {
             Optional<PlaceModel> usedPlace = placeRepository.findById(placeId);
-            PlaceModel updatedPlace = usedPlace.get();
-
-            updatedPlace.setPlaceName(placeModel.getPlaceName());
-            placeRepository.save(updatedPlace);
-            return new ResponseEntity<>(updatedPlace, HttpStatus.OK);
+            if(usedPlace.isPresent()){
+                PlaceModel updatedPlace = usedPlace.get();
+                updatedPlace.setPlaceName(placeModel.getPlaceName());
+                placeRepository.save(updatedPlace);
+                return new ResponseEntity<>(updatedPlace, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
