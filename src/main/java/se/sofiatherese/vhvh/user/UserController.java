@@ -1,6 +1,7 @@
 package se.sofiatherese.vhvh.user;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,12 +13,9 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @Controller
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @CrossOrigin
     @PostMapping("/registeruser")
@@ -27,13 +25,13 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/showusers")
-    public ResponseEntity<List<UserModel>> showUsers () {
+    public ResponseEntity<List<UserModel>> showUsers() {
         return userService.viewAllUsersAllInfo();
     }
 
     @CrossOrigin
     @GetMapping("/showuser/{username}")
-    public ResponseEntity<Optional<UserModel>> showUser (@PathVariable String username) {
+    public ResponseEntity<Optional<UserModel>> showUser(@PathVariable String username) {
         return userService.getOneUser(username);
     }
 
@@ -45,37 +43,38 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/showusersbylastname")
-    public ResponseEntity<List<UserModel>> showUsersByLastname(){
+    public ResponseEntity<List<UserModel>> showUsersByLastname() {
         return userService.sortAllUsersByLastname();
     }
 
     @CrossOrigin
     @GetMapping("/showusersbyrole")
-    public ResponseEntity<List<UserModel>> showUsersByRole() { return userService.sortAllUsersByRole(); }
+    public ResponseEntity<List<UserModel>> showUsersByRole() {
+        return userService.sortAllUsersByRole();
+    }
 
     @CrossOrigin
     @GetMapping("/saveuseranna")
-    public ResponseEntity<UserModel> registerUserAnna (){
-
+    public ResponseEntity<UserModel> registerUserAnna() {
         return userService.createUserAnna();
     }
 
     @CrossOrigin
     @GetMapping("/saveuserbritta")
-    public ResponseEntity<UserModel> registerUserBritta (){
-
+    public ResponseEntity<UserModel> registerUserBritta() {
         return userService.createUserBritta();
     }
 
     @CrossOrigin
     @DeleteMapping("/deleteuser/{username}")
-    public ResponseEntity<UserModel> deleteUser (@PathVariable String username) {
+    public ResponseEntity<UserModel> deleteUser(@PathVariable String username) {
         return userService.removeUser(username);
     }
 
     @CrossOrigin
     @PutMapping("/updateuser/{username}")
-    public ResponseEntity<UserModel> updateUser (@PathVariable String username, @RequestBody final UserModel userModel) {
+    public ResponseEntity<UserModel> updateUser(@PathVariable String username, @RequestBody final UserModel userModel) {
         return userService.updateUser(username, userModel);
     }
+
 }

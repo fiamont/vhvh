@@ -96,7 +96,6 @@ public class UserServiceImpl implements UserService {
                     .lastname("Alm")
                     .role(UserRole.USER)
                     .build();
-
             userRepository.save(anna);
             return new ResponseEntity<>(anna, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -114,7 +113,6 @@ public class UserServiceImpl implements UserService {
                     .lastname("Bok")
                     .role(UserRole.USER)
                     .build();
-
             userRepository.save(britta);
             return new ResponseEntity<>(britta, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -148,4 +146,5 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

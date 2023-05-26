@@ -11,6 +11,9 @@ import java.util.Map;
 public interface AuthService {
 
     AuthResponse authenticate(AuthRequest request) throws Exception;
+
     ResponseEntity<UserDetails> getAuthenticatedUser(Authentication authentication);
-    ResponseEntity<Map<String, Object>> notAuthenticated ();
+
+    ResponseEntity<Map<String, Object>> notAuthenticated();
+
 }

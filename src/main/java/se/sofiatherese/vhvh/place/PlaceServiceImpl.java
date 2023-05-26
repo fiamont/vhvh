@@ -56,7 +56,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<List<PlaceModelDTO>> viewAllPlaces (String username) {
+    public ResponseEntity<List<PlaceModelDTO>> viewAllPlaces(String username) {
         try {
             UserModel userModel = userRepository.findByUsername(username).orElseThrow();
             List<PlaceModel> allPlaces = placeRepository.findByUserModel(userModel);
@@ -68,7 +68,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName (String username) {
+    public ResponseEntity<List<PlaceModelDTO>> viewAllPlacesByName(String username) {
         try {
             UserModel userModel = userRepository.findByUsername(username).orElseThrow();
             List<PlaceModel> allPlaces = placeRepository.findByUserModelAndOrderByPlaceName(userModel);
@@ -122,4 +122,5 @@ public class PlaceServiceImpl implements PlaceService{
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

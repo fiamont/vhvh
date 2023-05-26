@@ -33,4 +33,5 @@ public interface UserService extends UserDetailsService {
     ResponseEntity<UserModel> removeUser(String username);
 
     ResponseEntity<UserModel> updateUser(String username, final UserModel userModel);
+
 }

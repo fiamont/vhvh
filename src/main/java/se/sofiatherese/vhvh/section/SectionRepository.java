@@ -9,9 +9,11 @@ import java.util.List;
 
 @Repository
 public interface SectionRepository extends JpaRepository<SectionModel, Long> {
-    SectionModel findBySectionId (Long sectionId);
+    SectionModel findBySectionId(Long sectionId);
+
     @Query("SELECT s FROM SectionModel s ORDER BY s.sectionName asc")
-    List<SectionModel> orderBySectionName ();
+    List<SectionModel> orderBySectionName();
 
     boolean existsBySectionNameAndPlaceModel(String sectionName, PlaceModel placeModel);
+
 }

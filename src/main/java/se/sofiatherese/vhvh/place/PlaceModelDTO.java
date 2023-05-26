@@ -12,4 +12,5 @@ public class PlaceModelDTO {
     private String placeName;
     private Long placeId;
     private Long userId;
+
 }

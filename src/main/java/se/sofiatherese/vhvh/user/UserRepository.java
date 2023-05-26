@@ -10,17 +10,19 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
 
-    Optional<UserModel> findByUsername (String username);
+    Optional<UserModel> findByUsername(String username);
 
     boolean existsByUsername(String username);
 
     @Query("SELECT s FROM UserModel s ORDER BY s.firstname asc")
-    List<UserModel> orderByFirstname ();
+    List<UserModel> orderByFirstname();
 
     @Query("SELECT s FROM UserModel s ORDER BY s.lastname asc")
-    List<UserModel> orderByLastname ();
+    List<UserModel> orderByLastname();
 
     @Query("SELECT s FROM UserModel s ORDER BY s.role asc")
     List<UserModel> orderByRole();
-    void deleteByUsername (String username);
+
+    void deleteByUsername(String username);
+
 }

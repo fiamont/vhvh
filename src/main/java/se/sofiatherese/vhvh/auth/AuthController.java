@@ -20,7 +20,7 @@ public class AuthController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request){
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         try {
             return ResponseEntity.ok(authService.authenticate(request));
         } catch (Exception e){
@@ -30,13 +30,13 @@ public class AuthController {
 
     @CrossOrigin
     @GetMapping("/getAuthenticatedUser")
-    public ResponseEntity<UserDetails> getAuthenticatedUser (Authentication authentication) {
+    public ResponseEntity<UserDetails> getAuthenticatedUser(Authentication authentication) {
         return authService.getAuthenticatedUser(authentication);
     }
 
     @CrossOrigin
     @PostMapping("/logout")
-    public ResponseEntity<Map<String, Object>> logout () {
+    public ResponseEntity<Map<String, Object>> logout() {
         return authService.notAuthenticated();
     }
 

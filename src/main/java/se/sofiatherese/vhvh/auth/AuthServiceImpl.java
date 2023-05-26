@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> notAuthenticated () {
+    public ResponseEntity<Map<String, Object>> notAuthenticated() {
         SecurityContextHolder.clearContext();
         Map<String, Object> response = new HashMap<>();
         response.put("message", "User är satt till 'anonymous'");
