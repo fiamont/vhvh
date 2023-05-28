@@ -17,7 +17,6 @@ import java.util.Optional;
 public class ArticleServiceImpl implements ArticleService {
 
     private final SectionRepository sectionRepository;
-
     private final ArticleRepository articleRepository;
 
     @Override
@@ -31,7 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
         return new ResponseEntity<>(articleModel, HttpStatus.CREATED);
     }
 
-    public List<ArticleModel> articleModelList (SectionModel sectionModel, List<ArticleModel> allArticles) {
+    public List<ArticleModel> articleModelList(SectionModel sectionModel, List<ArticleModel> allArticles) {
         List<ArticleModel> sectionArticles = new ArrayList<>();
         for (ArticleModel articleModel : allArticles) {
             if (articleModel.getSectionModel().equals(sectionModel)) {
@@ -42,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<List<ArticleModel>> viewAllArticles (Long sectionId) {
+    public ResponseEntity<List<ArticleModel>> viewAllArticles(Long sectionId) {
         try {
             SectionModel sectionModel = sectionRepository.findBySectionId(sectionId);
             List<ArticleModel> allArticles = articleRepository.findAll();
@@ -54,7 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<List<ArticleModel>> viewAllArticlesOrderByName (Long sectionId) {
+    public ResponseEntity<List<ArticleModel>> viewAllArticlesOrderByName(Long sectionId) {
         try {
             SectionModel sectionModel = sectionRepository.findBySectionId(sectionId);
             List<ArticleModel> allArticles = articleRepository.orderByArticleName();
@@ -66,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<List<ArticleModel>> viewAllArticlesOrderByBestBefore (Long sectionId) {
+    public ResponseEntity<List<ArticleModel>> viewAllArticlesOrderByBestBefore(Long sectionId) {
         try {
             SectionModel sectionModel = sectionRepository.findBySectionId(sectionId);
             List<ArticleModel> allArticles = articleRepository.orderByBestBefore();
@@ -87,7 +86,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<ArticleModel> removeArticle (Long articleId) {
+    public ResponseEntity<ArticleModel> removeArticle(Long articleId) {
         try {
             articleRepository.deleteById(articleId);
             return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
@@ -103,15 +102,19 @@ public class ArticleServiceImpl implements ArticleService {
         }
         try {
             Optional<ArticleModel> usedArticle = articleRepository.findById(articleId);
-            ArticleModel updatedArticle = usedArticle.get();
-            updatedArticle.setArticleName(articleModel.getArticleName());
-            updatedArticle.setTypeOfAmount(articleModel.getTypeOfAmount());
-            updatedArticle.setArticleAmount(articleModel.getArticleAmount());
-            updatedArticle.setBestBefore(articleModel.getBestBefore());
-            articleRepository.save(updatedArticle);
-            return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
+            if(usedArticle.isPresent()){
+                ArticleModel updatedArticle = usedArticle.get();
+                updatedArticle.setArticleName(articleModel.getArticleName());
+                updatedArticle.setTypeOfAmount(articleModel.getTypeOfAmount());
+                updatedArticle.setArticleAmount(articleModel.getArticleAmount());
+                updatedArticle.setBestBefore(articleModel.getBestBefore());
+                articleRepository.save(updatedArticle);
+                return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

@@ -37,7 +37,6 @@ public class AppConfig {
                 UserModel userModel = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + userModel.getRole()));
-
                 return new User(
                         userModel.getUsername(),
                         userModel.getPassword(),
@@ -53,10 +52,8 @@ public class AppConfig {
     @Bean
     public DaoAuthenticationProvider authenticationOverride() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-
         provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(bcryptPasswordEncoder());
-
         return provider;
     }
 
@@ -69,4 +66,5 @@ public class AppConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
 }

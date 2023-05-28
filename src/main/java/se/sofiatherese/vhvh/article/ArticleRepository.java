@@ -10,8 +10,9 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository <ArticleModel, Long> {
 
     @Query("SELECT s FROM ArticleModel s ORDER BY s.articleName asc")
-    List<ArticleModel> orderByArticleName ();
+    List<ArticleModel> orderByArticleName();
 
     @Query("SELECT s FROM ArticleModel s ORDER BY s.bestBefore asc")
-    List<ArticleModel> orderByBestBefore ();
+    List<ArticleModel> orderByBestBefore();
+
 }

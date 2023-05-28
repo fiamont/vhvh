@@ -37,18 +37,16 @@ public class AppSecurityConfig {
                 .and()
                 .authenticationProvider(appConfig.authenticationOverride())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http.cors().configurationSource(request -> {
-            CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-            corsConfiguration.addAllowedMethod("DELETE");
-            corsConfiguration.addAllowedMethod("POST");
-            corsConfiguration.addAllowedMethod("GET");
-            corsConfiguration.addAllowedMethod("OPTIONS");
-            corsConfiguration.addAllowedMethod("PUT");
-            return corsConfiguration;
-        });
-
-
+        http
+                .cors().configurationSource(request -> {
+                    CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+                    corsConfiguration.addAllowedMethod("DELETE");
+                    corsConfiguration.addAllowedMethod("POST");
+                    corsConfiguration.addAllowedMethod("GET");
+                    corsConfiguration.addAllowedMethod("OPTIONS");
+                    corsConfiguration.addAllowedMethod("PUT");
+                    return corsConfiguration;
+                });
         return http.build();
     }
 

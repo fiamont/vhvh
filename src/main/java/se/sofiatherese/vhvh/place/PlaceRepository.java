@@ -10,13 +10,13 @@ import java.util.List;
 @Repository
 public interface PlaceRepository extends JpaRepository<PlaceModel, Long> {
 
-    PlaceModel findByPlaceName (String placeName);
-
     boolean existsByPlaceNameAndUserModel_Username(String placeName, String userModel);
 
-    PlaceModel findByPlaceId (Long placeId);
+    PlaceModel findByPlaceId(Long placeId);
+
     @Query("SELECT s FROM PlaceModel s ORDER BY s.placeName asc")
     List<PlaceModel> findByUserModelAndOrderByPlaceName (UserModel userModel);
 
-    List<PlaceModel> findByUserModel (UserModel userModel);
+    List<PlaceModel> findByUserModel(UserModel userModel);
+
 }

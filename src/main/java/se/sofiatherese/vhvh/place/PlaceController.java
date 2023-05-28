@@ -19,37 +19,37 @@ public class PlaceController {
 
     @CrossOrigin
     @PostMapping("/createplace/{username}")
-    public ResponseEntity<PlaceModelDTO> createPlace (@Valid @RequestBody PlaceModelDTO placeModelDTO, PlaceModel placeModels, BindingResult result, @PathVariable String username){
+    public ResponseEntity<PlaceModelDTO> createPlace(@Valid @RequestBody PlaceModelDTO placeModelDTO, PlaceModel placeModels, BindingResult result, @PathVariable String username) {
         return placeService.createPlace(placeModelDTO, result, username, placeModels);
     }
 
     @CrossOrigin
     @GetMapping("/showallplaces/{username}")
-    public ResponseEntity<List<PlaceModelDTO>> showAllPlaces (@PathVariable String username) {
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlaces(@PathVariable String username) {
         return placeService.viewAllPlaces(username);
     }
 
     @CrossOrigin
     @GetMapping("/showallplacesbyname/{username}")
-    public ResponseEntity<List<PlaceModelDTO>> showAllPlacesByName (@PathVariable String username) {
+    public ResponseEntity<List<PlaceModelDTO>> showAllPlacesByName(@PathVariable String username) {
         return placeService.viewAllPlacesByName(username);
     }
 
     @CrossOrigin
     @GetMapping("/showoneplace/{placeId}")
-    public ResponseEntity<PlaceModelDTO> showOnePlace (@PathVariable Long placeId) {
+    public ResponseEntity<PlaceModelDTO> showOnePlace(@PathVariable Long placeId) {
         return placeService.getOnePlace(placeId);
     }
 
     @CrossOrigin
     @DeleteMapping("/deleteplace/{placeId}")
-    public ResponseEntity<PlaceModel> deletePlace (@PathVariable Long placeId) {
+    public ResponseEntity<PlaceModel> deletePlace(@PathVariable Long placeId) {
         return placeService.removePlace(placeId);
     }
 
     @CrossOrigin
     @PutMapping("/updateplace/{placeId}")
-    public ResponseEntity<PlaceModel> updatePlace (@PathVariable Long placeId, @Valid @RequestBody PlaceModel placeModel, BindingResult result) {
+    public ResponseEntity<PlaceModel> updatePlace(@PathVariable Long placeId, @Valid @RequestBody PlaceModel placeModel, BindingResult result) {
         return placeService.updatePlace(placeId, placeModel, result);
     }
 
